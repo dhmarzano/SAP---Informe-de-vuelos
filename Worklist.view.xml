@@ -1,0 +1,115 @@
+<mvc:View
+	controllerName="project2.controller.Worklist"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+	xmlns:semantic="sap.f.semantic">
+
+	<semantic:SemanticPage id="page" headerPinnable="true" toggleHeaderOnTitleClick="false">
+
+		<semantic:titleHeading>
+			<Title
+				text="{i18n>worklistTitle}"
+				level="H2"/>
+		</semantic:titleHeading>
+
+		<semantic:content>
+        <IconTabBar id="iconTabBar" select="onQuickFilter" expandable="false" applyContentPadding="false">  
+            <items>
+                <IconTabFilter key="all" showAll="true" count="{i18n>worklistFilterAllCount}"
+                text="{i18n>worklistFilterAll}"/>
+                <IconTabSeparator/>
+                <IconTabFilter key="bajo" icon="sap-icon://waiver"      iconColor="Positive" 
+                text="{i18n>worklistFilterBajo}"/>
+                <IconTabFilter key="medio" icon="sap-icon://loan"       iconColor="Critical"
+                text="{i18n>worklistFilterMedio}"/>
+                <IconTabFilter key="alto" icon="sap-icon://money-bills" iconColor="Negative"
+                text="{i18n>worklistFilterAlto}"/>
+            </items>
+
+            <content>
+    		<Table id="table" width="auto" class="sapUiResponsiveMargin"
+			    items="{path: '/Flight'}"
+				noDataText="{worklistView>/tableNoDataText}"
+				busyIndicatorDelay="{worklistView>/tableBusyDelay}"
+				growing="true"
+				growingScrollToLoad="true"
+				updateFinished=".onUpdateFinished">
+
+				<headerToolbar>
+					<OverflowToolbar>
+						<Title id="tableHeader" text="{worklistView>/worklistTableTitle}" level="H3"/>
+						<ToolbarSpacer />
+						<SearchField id="searchField" tooltip="{i18n>worklistSearchTooltip}" search=".onSearch">
+							<layoutData>
+								<OverflowToolbarLayoutData
+									maxWidth="200px"
+									priority="NeverOverflow"/>
+							</layoutData>
+						</SearchField>
+                <Button icon="sap-icon://refresh" press="onTablePersoRefresh" >
+				    	<layoutData>
+					    	<OverflowToolbarLayoutData priority="NeverOverflow" />
+					    </layoutData>
+				</Button>
+                <Button icon="sap-icon://action-settings" press="onPersoButtonPressed" >
+					        <layoutData>
+						        <OverflowToolbarLayoutData priority="NeverOverflow" />
+					        </layoutData>
+				</Button>
+					</OverflowToolbar>
+				</headerToolbar>
+
+				<columns>
+					<Column id="nameColumnTitle">
+						<Text text="{i18n>tableNameColumnTitle}" />
+					</Column>
+                     <Column id="nameConnectionID" demandPopin="true" minScreenWidth="Tablet">
+                        <Text text="{i18n>tableConnectionID}" />
+                    </Column>
+                    <Column id="namePlaneType" demandPopin="true" minScreenWidth="Tablet">
+                        <Text text="{i18n>tablePlaneType}" />
+                    </Column>
+                    <Column id="nameMaximumSeats" demandPopin="true" minScreenWidth="Tablet">
+                        <Text text="{i18n>tableMaximumSeats}" />
+                    </Column>
+                     <Column id="nameOccupiedSeats" demandPopin="true" minScreenWidth="Tablet">
+                        <Text text="{i18n>tableOccupiedSeats}" />
+                    </Column>
+                    <Column id="fecha">
+                        <customData>
+                        <core:CustomData key="p13nData" value='\{"columnKey": "Fecha",  "leadingProperty":"Fecha"}' />
+                        </customData>
+                        <Text text="{i18n>tableFecha}" />
+                    </Column>                     
+					<Column id="unitNumberColumnTitle" hAlign="End">
+						<Text text="{i18n>tableUnitNumberColumnTitle}" />
+					</Column>
+				</columns>
+
+				<items>
+					<ColumnListItem type="Navigation" press=".onPress">
+						<cells>
+							<ObjectIdentifier title="{AirlineID}" text="{AirlineID_Text}"/>
+                            <Text text="{ConnectionID}"/>
+                            <Text text="{PlaneType}"/>
+                            <Text text="{MaximumSeats}"/>
+                            <Text text="{OccupiedSeats}"/>
+                            <Text text="{path: '/Fecha', formatter: '.formatter.date'}"/>
+							<ObjectNumber number="{ path: 'Price', formatter: '.formatter.numberUnit' }" unit="{CurrencyCode}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+            </content>
+         </IconTabBar>   
+		</semantic:content>
+
+		<semantic:sendEmailAction>
+			<semantic:SendEmailAction id="shareEmail" press=".onShareEmailPress"/>
+		</semantic:sendEmailAction>
+
+
+	</semantic:SemanticPage>
+
+</mvc:View>

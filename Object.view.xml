@@ -1,0 +1,67 @@
+<mvc:View 
+          controllerName="project2.controller.Object"
+          xmlns="sap.m" 
+          xmlns:mvc="sap.ui.core.mvc" 
+          xmlns:semantic="sap.f.semantic" 
+          xmlns:form="sap.ui.layout.form" 
+          xmlns:l="sap.ui.layout" 
+          xmlns:mc="project2.control">
+
+	<semantic:SemanticPage id="page" headerPinnable="false" toggleHeaderOnTitleClick="false" busy="{objectView>/busy}" busyIndicatorDelay="{objectView>/delay}">
+
+		<semantic:titleHeading>
+			<Title text="{AirlineID}" wrapping="true" level="H2"/>
+		</semantic:titleHeading>
+    
+		<semantic:headerContent>
+		<FlexBox alignItems="Start" justifyContent="SpaceBetween">
+				
+                <Panel backgroundDesign="Transparent">
+                    <ObjectAttribute title="{i18n>tableNameColumnTitle}"    text="{AirlineID_Text}"/>
+                    <ObjectAttribute title="{i18n>tableConnectionID}"       text="{ConnectionID}"/>
+                    <ObjectAttribute title="{i18n>tableDepartureAirport}"   text="{DepartureAirport}"/>
+                    <ObjectAttribute title="{i18n>tableDestinationAirport}" text="{DestinationAirport}"/>
+				</Panel>
+                
+                <Panel backgroundDesign="Translucent">
+                    <mc:FlightRating id="rating" class="sapUISmallMarginBeginEnd" change=".onRatingChange"/>
+                </Panel>
+                
+                <Panel backgroundDesign="Transparent">
+                <ObjectNumber unit="{DistanceUnit}" textAlign="End" 
+                state="{ path: 'Distance', formatter: '.formatter.quantityState'}" number="{ path: 'Distance'}"></ObjectNumber>
+                <Title text="{i18n>tableDistance}"/>
+                <ProgressIndicator width="300px" percentValue="{Distance}" displayValue="{Distance}" showValue="true" state="{ path: 'Distance', formatter: '.formatter.quantityState'}"/>
+                </Panel>
+                
+                </FlexBox>
+		</semantic:headerContent>
+
+        <semantic:content>
+      	<l:VerticalLayout width="100%">
+        <Panel class="sapUiResponsiveMargin" backgroundDesign="Transparent"  headerText="{i18n>infoVuelo}" expandable="{device>/system/phone}" expanded="true">
+         <content>
+         	<ObjectAttribute title="{i18n>infoVuelo}"  text="{i18n>infoText}"/> 
+         </content>
+        </Panel>
+
+        <Panel  class="sapUiResponsiveMargin"  backgroundDesign="Transparent" headerText="{i18n>ObjectCommentsTabTitle}">
+		<content>
+			<FeedInput post=".onPost"/>
+				<List id="idCommentsList" noDataText="{i18n>ObjectCommentNoData}" showSeparators="Inner"
+						items="{path: 'flightFeedback>/flightComments', sorter: {path: 'date', descending: true}}">
+				<FeedListItem info="{flightFeedback>type}" text="{flightFeedback>comment}" timestamp="{flightFeedback>date}"/>
+				</List>
+		</content>
+		</Panel>
+        </l:VerticalLayout>
+        </semantic:content>
+        
+
+		<semantic:sendEmailAction>
+			<semantic:SendEmailAction id="shareEmail" press=".onShareEmailPress"/>
+		</semantic:sendEmailAction>
+
+
+	</semantic:SemanticPage>
+</mvc:View>
